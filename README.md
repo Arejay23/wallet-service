@@ -139,11 +139,10 @@ $ npm run test:cov
 - **Response**:
   ```json
   {
-    "id": 1,
-    "balance": 1500,
-    "name": "Main Wallet",
-    "createdAt": "2023-01-01T00:00:00.000Z",
-    "updatedAt": "2023-01-01T00:30:00.000Z"
+    "id": 5,
+    "name": "name",
+    "balance": 357.3555,
+    "date": "2025-07-20T02:21:37.000Z"
   }
   ```
 
@@ -162,21 +161,21 @@ $ npm run test:cov
       "id": 2,
       "walletId": 1,
       "amount": 500,
+      "balance": 357.3555,
       "type": "CREDIT",
       "description": "Payment received",
       "status": "SUCCESS",
-      "createdAt": "2023-01-01T00:30:00.000Z",
-      "updatedAt": "2023-01-01T00:30:00.000Z"
+      "created_at": "2023-01-01T00:30:00.000Z",
     },
     {
       "id": 1,
       "walletId": 1,
-      "amount": 1000,
-      "type": "SETUP",
+      "amount": -100,
+      "balance": 357.3555,
+      "type": "DEBIT",
       "description": "Initial balance",
       "status": "SUCCESS",
-      "createdAt": "2023-01-01T00:00:00.000Z",
-      "updatedAt": "2023-01-01T00:00:00.000Z"
+      "created_at": "2023-01-01T00:00:00.000Z"
     }
   ]
   ```
@@ -226,3 +225,4 @@ The service uses NestJS's configuration system. Refer to the `Configuration` dir
 
 - [NestJS Documentation](https://docs.nestjs.com)
 - [Node.js Documentation](https://nodejs.org/en/docs/)
+
