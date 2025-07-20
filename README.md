@@ -6,18 +6,32 @@
 
 # Wallet Service
 
+## Overview
+This service manages wallet balances and transactions, providing endpoints to create wallets, perform credit/debit operations, and view transaction history. It includes robust race condition handling through database transactions and row-level locking to ensure data consistency during concurrent operations.
+
 ## Description
 
 A wallet service built with [Nest](https://github.com/nestjs/nest) framework that provides functionality for creating wallets, performing transactions (credit and debit), and retrieving wallet information and transaction history.
 
 ## Project Setup
+1. Clone the repository
 
 ```bash
 # Install dependencies
 $ npm install
+```
 
-# Set Node.js version (requires NVM)
-$ ./switch-to-node20.sh
+### Requirements
+- Node.js v20.19.4
+- npm v10.8.2
+- NVM 0.39.7 (for managing Node.js versions)
+
+### Running the Application
+```bash
+# Start the application
+$ npm run start
+
+# The service will be available at http://localhost:3001
 ```
 
 ## Running the Application
@@ -180,33 +194,56 @@ $ npm run test:cov
   ]
   ```
 
-## Implementation Details
+## Technical Design
 
-### Architecture
+### Database Schema
 
-The wallet service follows a layered architecture pattern with the following components:
+#### Wallet Table
+- `id` (Primary Key)
+- `name` (VARCHAR)
+- `balance` (DECIMAL(18,4))
+- `created_at` (DATETIME)
+- `updated_at` (DATETIME)
 
-- **Controllers**: Handle HTTP requests and responses
-- **Services**: Implement business logic
-- **Repositories**: Handle data storage operations
-- **Entities**: Define data models
-- **Enums**: Define constants used in the application
+#### Transactions Table
+- `id` (Primary Key)
+- `wallet_id` (Foreign Key)
+- `amount` (DECIMAL(18,4))
+- `balance` (DECIMAL(18,4)) - Wallet balance at time of transaction
+- `type` (VARCHAR) - 'CREDIT' or 'DEBIT'
+- `description` (VARCHAR)
+- `status` (VARCHAR) - 'PENDING', 'SUCCESS', or 'FAILED'
+- `created_at` (DATETIME)
 
 ### Transaction Flow
 
 1. **Credit Transaction**:
+   - Start database transaction with row-level locking
+   - Fetch wallet by ID with FOR UPDATE lock to prevent concurrent modifications
    - Validate input data
-   - Create a pending transaction
-   - Add amount to wallet balance
+   - Create a pending transaction with current wallet balance
+   - Add amount to wallet balance with explicit numeric conversion
    - Update transaction status to success
-   - Return updated balance and transaction ID
+   - Commit database transaction
+   - Return updated balance (truncated to 4 decimal places) and transaction ID
 
 2. **Debit Transaction**:
+   - Start database transaction with row-level locking
+   - Fetch wallet by ID with FOR UPDATE lock to prevent concurrent modifications
    - Validate input data and check sufficient balance
-   - Create a pending transaction
-   - Subtract amount from wallet balance
+   - Create a pending transaction with current wallet balance
+   - Subtract amount from wallet balance with explicit numeric conversion
    - Update transaction status to success
-   - Return updated balance and transaction ID
+   - Commit database transaction
+   - Return updated balance (truncated to 4 decimal places) and transaction ID
+
+### Race Condition Handling
+
+- Transactions are protected from race conditions using database transactions and row-level locking
+- Pessimistic locking (FOR UPDATE) ensures that concurrent operations on the same wallet are serialized
+- All operations (balance check, transaction creation, balance update) happen atomically
+- If any step fails, the entire transaction is rolled back, preserving data consistency
+- Wallet balances are explicitly converted to numbers to prevent string concatenation issues
 
 ### Error Handling
 
