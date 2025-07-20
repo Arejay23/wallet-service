@@ -11,19 +11,19 @@ export class MySQLConfig implements TypeOrmOptionsFactory {
       synchronize: false,
       replication: {
         master: {
-          port: 3306,
+          port: 52586,
           username: 'root',
           password: 'DncBcsbxPKMVTLlzQzUVRpXcdVWhlxkh',
           database: 'railway',
-          host: 'mysql.railway.internal',
+          host: 'ballast.proxy.rlwy.net',
         },
         slaves: [
           {
-            port: 3306,
+            port: 52586,
             username: 'root',
             password: 'DncBcsbxPKMVTLlzQzUVRpXcdVWhlxkh',
             database: 'railway',
-            host: 'mysql.railway.internal',
+            host: 'ballast.proxy.rlwy.net',
           },
         ],
       },
