@@ -30,7 +30,7 @@ export class WalletRepositoryService {
       .getOne();
   }
 
-  async addWallet(balance: number, name: string): Promise<any> {
+  async addWallet(balance: number, name: string): Promise<Wallet> {
     const wallet = new Wallet();
     wallet.balance = balance;
     wallet.name = name;
@@ -40,7 +40,7 @@ export class WalletRepositoryService {
     return data;
   }
 
-  async updateWallet(wallet: Wallet): Promise<any> {
+  async updateWallet(wallet: Wallet): Promise<Wallet> {
     const data = await this.walletRepository.save(wallet);
     return data;
   }
@@ -48,7 +48,7 @@ export class WalletRepositoryService {
   async updateWalletWithEntityManager(
     wallet: Wallet,
     entityManager: EntityManager,
-  ): Promise<any> {
+  ): Promise<Wallet> {
     // Update the wallet using the provided entity manager within a transaction
     return entityManager.save(Wallet, wallet);
   }
