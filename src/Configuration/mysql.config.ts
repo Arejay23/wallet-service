@@ -12,18 +12,18 @@ export class MySQLConfig implements TypeOrmOptionsFactory {
       replication: {
         master: {
           port: 3306,
-          username: 'root',
-          password: 'root1234',
-          database: 'payments',
-          host: '127.0.0.1',
+          username: 'sql12790890',
+          password: '2FAzREisH2',
+          database: 'sql12790890',
+          host: 'sql12.freesqldatabase.com',
         },
         slaves: [
           {
             port: 3306,
-            username: 'root',
-            password: 'root1234',
-            database: 'payments',
-            host: '127.0.0.1',
+            username: 'sql12790890',
+            password: '2FAzREisH2',
+            database: 'sql12790890',
+            host: 'sql12.freesqldatabase.com',
           },
         ],
       },
