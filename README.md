@@ -63,7 +63,7 @@ $ npm run test:cov
 ## API Documentation
 
 ### Wallet APIs
-
+-**Base URL**: `https://wallet-service-production-36e0.up.railway.app`
 #### 1. Create Wallet
 
 - **Endpoint**: `POST /setup`
